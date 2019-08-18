@@ -1,15 +1,12 @@
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
- class WordsCounter {
+class WordsCounter {
 
 
-    protected static void countWords(String text) throws IOException {
-        System.out.println(text);
+    protected static List<Map.Entry<String, Integer>> top5MostFrequentWord(String text) throws IOException {
+//        System.out.println(text);
 
         String[] separateWords = TextSplitter.splittWords(text.toLowerCase());
 
@@ -24,20 +21,35 @@ import java.util.stream.Collectors;
         String mostFreqKey = null;
 
 
-            for (Map.Entry<String, Integer> entry : occurence.entrySet()) {
-                if (maxOccurence.equals(entry.getValue())) {
-                    mostFreqKey = entry.getKey();
-                }
+        for (Map.Entry<String, Integer> entry : occurence.entrySet()) {
+            if (maxOccurence.equals(entry.getValue())) {
+                mostFreqKey = entry.getKey();
             }
+        }
 
         System.out.println("\nthe most frequent word: \"" + mostFreqKey
-                + "\", \noccured " + maxOccurence + " times");
+                + "\", \noccured " + maxOccurence + " times;");
 
-        LinkedHashMap<String, Integer> sorted = occurence.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
-//        System.out.println(sorted.entrySet().stream().collect(Collections.reverseOrder()));
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(occurence.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(final Map.Entry<String, Integer> o1, final Map.Entry<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        try {
 
+            int top = 5;
+            int counter = 1;
+            for (int i = 1; i < top; i++) {
+                counter++;
+                System.out.println(counter + ", " + list.get(i) + " times");
+            }
+        }catch (Exception indexOutOfBound){
+
+        }
+
+        return list;
     }
+
 }

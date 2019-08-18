@@ -11,6 +11,6 @@ public class Main {
 //        TextSplitter.splittWords(urlPath);
 
         String text2 = "lorem ipsum, lorem lorem ipsum lorem hey";
-        WordsCounter.countWords(text);
+        WordsCounter.top5MostFrequentWord(text2);
     }
 }
